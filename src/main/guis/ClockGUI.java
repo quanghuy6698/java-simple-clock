@@ -1,61 +1,77 @@
 package main.guis;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import main.constants.AppConstants;
 import main.threads.ClockThread;
 
 public class ClockGUI extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
-    private JPanel panel;
+    private JPanel classicClockPanel;
+    private JLabel digitalTime;
     private ClockThread clockThread;
     private ClockCanvas clockCanvas;
 
-    /**
-     * Create app frame.
-     */
     public ClockGUI() {
-//	initComponents();
-	panel = new JPanel();
-	getContentPane().add(panel);
-	pack();
-
-	clockCanvas = new ClockCanvas();
-	panel.add(clockCanvas);
+	initComponents();
 
 	clockThread = new ClockThread();
 	clockThread.setClockCanvas(clockCanvas);
 	clockThread.start();
 
 	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//	setBounds(100, 100, AppConstants.APP_WIDTH, AppConstants.APP_HEIGHT);
+	setBounds(100, 100, AppConstants.APP_WIDTH, AppConstants.APP_HEIGHT);
 	setTitle("Simple Clock");
 	setResizable(false);
-	setSize(new java.awt.Dimension(400, 500));
+//	setSize(new java.awt.Dimension(400, 550));
     }
 
+    /**
+     * Init components
+     */
     private void initComponents() {
+	classicClockPanel = new JPanel();
+	classicClockPanel.setLayout(new FlowLayout());
 
-	panel = new JPanel();
+	JLabel appTitle = new JLabel();
+	appTitle.setText("Simple Clock");
+	appTitle.setHorizontalAlignment(SwingConstants.CENTER);
+	appTitle.setFont(new Font("Tahoma", Font.BOLD, 20));
+	appTitle.setSize(400, 50);
 
-	setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-	setTitle("Simple Clock");
-	setResizable(false);
-	setSize(new java.awt.Dimension(400, 500));
+	digitalTime = new JLabel();
+	digitalTime.setText("ajaja");
+	digitalTime.setHorizontalAlignment(SwingConstants.CENTER);
+	digitalTime.setFont(new Font("Tahoma", Font.BOLD, 14));
+	digitalTime.setForeground(Color.red);
+	digitalTime.setSize(400, 50);
 
-	getContentPane().add(panel, java.awt.BorderLayout.CENTER);
+	clockCanvas = new ClockCanvas();
+
+	classicClockPanel.add(appTitle);
+	classicClockPanel.add(clockCanvas);
+	classicClockPanel.add(digitalTime);
+
+	setContentPane(classicClockPanel);
 
 	pack();
     }
 
-    public JPanel getPanel() {
-	return panel;
+    public JPanel getClassicClockPanel() {
+	return classicClockPanel;
     }
 
-    public void setPanel(JPanel panel) {
-	this.panel = panel;
+    public void setClassicClockPanel(JPanel classicClockPanel) {
+	this.classicClockPanel = classicClockPanel;
     }
 
     public ClockThread getClockThread() {

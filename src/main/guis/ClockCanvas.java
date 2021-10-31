@@ -1,36 +1,48 @@
 package main.guis;
 
 import java.awt.Canvas;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
 import java.util.Calendar;
+
+import main.constants.AppConstants;
+import main.models.Moment;
 
 public class ClockCanvas extends Canvas {
     private static final long serialVersionUID = 1L;
 
+    private Moment time;
+
     public ClockCanvas() {
-	setSize(400, 500);
+	setSize(400, 400);
     }
 
     @Override
-    public void paint(Graphics g) {
-	drawClock(g);
-	drawClockwise(g);
+    public void paint(Graphics graphics) {
+	drawClock(graphics);
+	drawClockwise(graphics);
     }
 
-    private void drawClock(Graphics g) {
-	g.setFont(new Font("Tahoma", Font.PLAIN, 18));
-	g.drawString("12", 193, 70);
-	g.drawString("3", 332, 205);
-	g.drawString("6", 195, 344);
-	g.drawString("9", 55, 205);
-	g.drawOval(50, 50, 300, 300);
+    /**
+     * Draw clock
+     * 
+     * @param graphics - Graphic contexts
+     */
+    private void drawClock(Graphics graphics) {
+	graphics.setFont(new Font("Tahoma", Font.BOLD, 18));
+	graphics.drawString("12", 193, 70);
+	graphics.drawString("3", 332, 205);
+	graphics.drawString("6", 195, 344);
+	graphics.drawString("9", 55, 205);
+	graphics.drawOval(50, 50, 300, 300);
     }
 
-    private void drawClockwise(Graphics g) {
+    /**
+     * Draw clockwise
+     * 
+     * @param graphics - Graphic contexts
+     */
+    private void drawClockwise(Graphics graphics) {
 	Calendar calendar = Calendar.getInstance();
 
 	int hour = calendar.get(Calendar.HOUR);
@@ -42,31 +54,30 @@ public class ClockCanvas extends Canvas {
 	double minuteAngle = (Math.PI * minute) / 30;
 	double secondAngle = (Math.PI * second) / 30;
 
-	double x1 = 200 + 80 * Math.sin(hourAngle);
-	double y1 = 200 - 80 * Math.cos(hourAngle);
+	int x1 = (int) (200 + 80 * Math.sin(hourAngle));
+	int y1 = (int) (200 - 80 * Math.cos(hourAngle));
 
-	double x2 = 200 + 100 * Math.sin(minuteAngle);
-	double y2 = 200 - 100 * Math.cos(minuteAngle);
+	int x2 = (int) (200 + 100 * Math.sin(minuteAngle));
+	int y2 = (int) (200 - 100 * Math.cos(minuteAngle));
 
-	double x3 = 200 + 120 * Math.sin(secondAngle);
-	double y3 = 200 - 120 * Math.cos(secondAngle);
+	int x3 = (int) (200 + 120 * Math.sin(secondAngle));
+	int y3 = (int) (200 - 120 * Math.cos(secondAngle));
 
-	Graphics2D g2 = (Graphics2D) g;
-	g2.setColor(Color.black);
-	g2.draw(new Line2D.Double(200, 200, x1, y1));
-	g2.setColor(Color.blue);
-	g2.draw(new Line2D.Double(200, 200, x2, y2));
-	g2.setColor(Color.red);
-	g2.draw(new Line2D.Double(200, 200, x3, y3));
+	graphics.setColor(AppConstants.HOUR_CLOCKWISE_COLOR);
+	graphics.drawLine(200, 200, x1, y1);
+	graphics.setColor(AppConstants.MINUTE_CLOCKWISE_COLOR);
+	graphics.drawLine(200, 200, x2, y2);
+	graphics.setColor(AppConstants.SECONDS_CLOCKWISE_COLOR);
+	graphics.drawLine(200, 200, x3, y3);
 
-	String time = hour + ":" + minute + ":" + second;
-	drawTimeString(g, time);
     }
 
-    private void drawTimeString(Graphics g, String time) {
-	g.setFont(new Font("Tahoma", Font.PLAIN, 18));
-	g.setColor(Color.red);
-	g.drawString(time, 100, 390);
+    public Moment getTime() {
+	return time;
+    }
+
+    public void setTime(Moment time) {
+	this.time = time;
     }
 
 }
